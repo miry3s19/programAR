@@ -149,6 +149,8 @@
             document.getElementById('stepInfo').innerText = "Carregando...";
             await carregarTraceDoBackend(codigoC);
         }
+        
+        fetch('https://programar-api.onrender.com/').catch(() => console.log("Acordando API..."));
     </script>
 </body>
 </html>
