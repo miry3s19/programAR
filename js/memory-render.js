@@ -31,7 +31,7 @@ function mudarPasso(direcao) {
 
 // Renderiza a estante e os chips
 function atualizarVisualizacaoAR() {
-    const anchor = document.querySelector('#ar-anchor');
+    const anchor = document.querySelector('#ar-rotator');
     if (!anchor) return;
 
     // Limpa os elementos visuais anteriores
