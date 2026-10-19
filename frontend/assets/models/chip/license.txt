@@ -1,0 +1,11 @@
+Model Information:
+* title:	Chip
+* source:	https://sketchfab.com/3d-models/chip-ca1810c2a867452f994ac6a048f8dde1
+* author:	AnsysLearn (https://sketchfab.com/AnsysLearn)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Chip" (https://sketchfab.com/3d-models/chip-ca1810c2a867452f994ac6a048f8dde1) by AnsysLearn (https://sketchfab.com/AnsysLearn) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

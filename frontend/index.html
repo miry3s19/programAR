@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>programAR - Debugger de Memória C</title>
+    
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+        
+        /* Menu para inserção de código */
+        #ui-panel {
+            position: absolute; 
+            top: 10px; 
+            left: 10px; 
+            z-index: 999; 
+            background: rgba(0,0,0,0.85); 
+            padding: 15px; 
+            border-radius: 8px; 
+            color: white; 
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        #ui-panel textarea {
+            width: 100%;
+            box-sizing: border-box;
+            font-family: monospace;
+            margin-bottom: 10px;
+            background: #222;
+            color: #00ff00;
+            border: 1px solid #444;
+            padding: 5px;
+        }
+        #ui-panel button {
+            background: #00aa00;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #ui-panel button:hover { background: #00cc00; }
+        
+        #controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #333;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        #controls button {
+            background: #555;
+            padding: 5px 10px;
+        }
+        #controls button:hover { background: #777; }
+        #stepInfo { font-weight: bold; color: #00ff00; }
+    </style>
+</head>
+<body>
+
+    <!-- MENU -->
+    <div id="ui-panel">
+        <h3 style="margin-top: 0; color: #00ff00;">programAR</h3>
+        
+        <!-- Depois colocar o botão de OCR aqui -->
+        <textarea id="codigoInput" rows="5">int main() {
+    int a = 42;
+    int *p = &a;
+    *p = 99;
+    return 0;
+}</textarea>
+        
+        <button onclick="dispararCarregamento()" style="width: 100%;">Carregar Trace (API)</button>
+        
+        <div id="controls">
+            <button onclick="mudarPasso(-1)">◀</button>
+            <span id="stepInfo">Aguardando...</span>
+            <button onclick="mudarPasso(1)">▶</button>
+        </div>
+    </div>
+
+    <!-- CENA DE REALIDADE AUMENTADA -->
+    <a-scene 
+        mindar-image="imageTargetSrc: ./targets.mind;" 
+        color-space="sRGB" 
+        renderer="colorManagement: true, physicallyCorrectLights" 
+        vr-mode-ui="enabled: false" 
+        device-orientation-permission-ui="enabled: false"
+        embedded>
+        
+        <!-- Assets -->
+        <a-assets>
+            <a-asset-item id="chip" src="./assets/models/chip/chip.glb"></a-asset-item>
+            <a-asset-item id="shelf" src="./assets/models/box_shelf/scene.gltf"></a-asset-item>
+        </a-assets>
+
+        <!-- Iluminação -->
+        <a-entity light="type: ambient; color: #ffffff; intensity: 0.6"></a-entity>
+        <a-entity light="type: directional; color: #ffffff; intensity: 0.8" position="-1 2 2"></a-entity>
+        <a-entity light="type: directional; color: #ffffff; intensity: 0.4" position="1 -1 -1"></a-entity>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        
+        <!-- ALVO -->
+        <a-entity mindar-image-target="targetIndex: 0">
+            
+            <!-- A ÂNCORA FICA DENTRO DO ALVO!  Quando o celular reconhecer a imagem tudo aqui dentro vai ser renderizado em cima dela -->
+            <a-entity id="ar-anchor" position="0 0 0.1"></a-entity>
+            
+        </a-entity>
+    </a-scene>
+
+    <script src="js/memory-render.js"></script>
+
+    <script>
+        // Pega o texto da textarea e chama a função do memory-render
+        async function dispararCarregamento() {
+            const codigoC = document.getElementById('codigoInput').value;
+            document.getElementById('stepInfo').innerText = "Carregando...";
+            await carregarTraceDoBackend(codigoC);
+        }
+    </script>
+</body>
+</html>
