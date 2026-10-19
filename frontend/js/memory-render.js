@@ -4,7 +4,7 @@ let currentStepIndex = 0;
 // Requisição para a API, que responde com o json
 async function carregarTraceDoBackend(codigoC) {
     try {
-        let response = await fetch('http://127.0.0.1:8000/trace', {
+        let response = await fetch('https://programar-api.onrender.com/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ code: codigoC })
